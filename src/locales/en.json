@@ -1,8 +1,8 @@
 
 {
-  "appTitle": "TldrGenius",
+  "appTitle": "Karamba!",
   "appDescription": "Get concise summaries for any topic.",
-  "pageTitle": "TldrGenius",
+  "pageTitle": "Karamba!",
   "pageSubtitle": "Get concise summaries for any topic, powered by AI.",
   "describeTopicCardTitle": "Describe Your Topic",
   "describeTopicCardDescription": "Provide a topic and some details to get a summary.",
@@ -20,7 +20,7 @@
   "historyCardTitle": "History",
   "clearHistoryButton": "Clear",
   "noHistoryMessage": "No history yet. Summarize a topic to see it here!",
-  "footerText": "© {{year}} TldrGenius. All rights reserved.",
+  "footerText": "© {{year}} Karamba!. All rights reserved.",
   "toastSummaryGeneratedTitle": "Summary Generated!",
   "toastSummaryGeneratedDescription": "Successfully summarized \"{{topic}}\".",
   "toastErrorTitle": "Uh oh! Something went wrong.",

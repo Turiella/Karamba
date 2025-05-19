@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 // Static metadata will be in the default language (Spanish)
 // and dynamically updated by LocaleProvider on the client-side.
 export const metadata: Metadata = {
-  title: 'TldrGenius', // Spanish default
+  title: 'Karamba!', // Spanish default
   description: 'Obtén resúmenes concisos para cualquier tema.', // Spanish default
 };
 

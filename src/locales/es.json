@@ -1,8 +1,8 @@
 
 {
-  "appTitle": "TldrGenius",
+  "appTitle": "Karamba!",
   "appDescription": "Obtén resúmenes concisos para cualquier tema.",
-  "pageTitle": "TldrGenius",
+  "pageTitle": "Karamba!",
   "pageSubtitle": "Obtén resúmenes concisos para cualquier tema, impulsado por IA.",
   "describeTopicCardTitle": "Describe tu Tema",
   "describeTopicCardDescription": "Proporciona un tema y algunos detalles para obtener un resumen.",
@@ -20,7 +20,7 @@
   "historyCardTitle": "Historial",
   "clearHistoryButton": "Limpiar",
   "noHistoryMessage": "Aún no hay historial. ¡Resume un tema para verlo aquí!",
-  "footerText": "© {{year}} TldrGenius. Todos los derechos reservados.",
+  "footerText": "© {{year}} Karamba!. Todos los derechos reservados.",
   "toastSummaryGeneratedTitle": "¡Resumen Generado!",
   "toastSummaryGeneratedDescription": "Se resumió exitosamente \"{{topic}}\".",
   "toastErrorTitle": "¡Oh no! Algo salió mal.",
