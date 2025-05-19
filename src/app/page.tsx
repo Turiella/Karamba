@@ -86,7 +86,7 @@ export default function TldrGeniusPage() {
     setSummary(null);
 
     try {
-      const input: SummarizeTopicInput = { topic, details };
+      const input: SummarizeTopicInput = { topic, details, language: locale };
       const result: SummarizeTopicOutput = await summarizeTopic(input);
       setSummary(result.summary);
       addHistoryItem(topic, details);

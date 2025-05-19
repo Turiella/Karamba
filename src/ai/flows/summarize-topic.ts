@@ -2,7 +2,7 @@
 'use server';
 
 /**
- * @fileOverview Summarizes a given topic for a student.
+ * @fileOverview Summarizes a given topic for a student in a specified language.
  *
  * - summarizeTopic - A function that summarizes a given topic.
  * - SummarizeTopicInput - The input type for the summarizeTopic function.
@@ -19,12 +19,13 @@ const SummarizeTopicInputSchema = z.object({
     .describe(
       'Detailed information about the topic to use for generating the summary.'
     ),
+  language: z.string().describe('The language for the summary (e.g., "en" for English, "es" for Spanish).'),
 });
 
 export type SummarizeTopicInput = z.infer<typeof SummarizeTopicInputSchema>;
 
 const SummarizeTopicOutputSchema = z.object({
-  summary: z.string().describe('A concise summary of the topic.'),
+  summary: z.string().describe('A concise summary of the topic in the requested language.'),
 });
 
 export type SummarizeTopicOutput = z.infer<typeof SummarizeTopicOutputSchema>;
@@ -44,10 +45,11 @@ const summarizeTopicPrompt = ai.definePrompt({
   prompt: `You are an expert at creating concise summaries of complex topics for secondary students.
 
   Given the following topic and details, create a summary that captures the key concepts in a clear and understandable way.
+  The summary MUST be in {{{language}}}.
 
   Topic: {{{topic}}}
   Details: {{{details}}}
-  Summary:`, // Ensure the prompt ends with 'Summary:' to guide the model
+  Summary:`,
 });
 
 const summarizeTopicFlow = ai.defineFlow(
