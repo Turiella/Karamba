@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect, useCallback } from 'react';
@@ -9,7 +10,8 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useToast } from "@/hooks/use-toast";
-import { History, Loader2, Trash2, BotMessageSquare } from 'lucide-react';
+import { History, Loader2, Trash2, BotMessageSquare, Languages } from 'lucide-react';
+import { useLocale } from '@/contexts/LocaleContext';
 
 interface HistoryItem {
   id: string;
@@ -29,6 +31,12 @@ export default function TldrGeniusPage() {
   const [error, setError] = useState<string | null>(null);
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const { toast } = useToast();
+  const { locale, setLocale, t } = useLocale();
+  const [currentYear, setCurrentYear] = useState<number | null>(null);
+
+  useEffect(() => {
+    setCurrentYear(new Date().getFullYear());
+  }, []);
 
   useEffect(() => {
     try {
@@ -38,7 +46,6 @@ export default function TldrGeniusPage() {
       }
     } catch (e) {
       console.error("Failed to load history from localStorage", e);
-      // Optionally, clear corrupted data or notify user
       localStorage.removeItem(LOCAL_STORAGE_KEY);
     }
   }, []);
@@ -66,11 +73,11 @@ export default function TldrGeniusPage() {
 
   const handleSummarize = async () => {
     if (!topic.trim()) {
-      setError("Please enter a topic.");
+      setError(t('errorPleaseEnterTopic'));
       return;
     }
     if (!details.trim()) {
-      setError("Please provide some details about the topic.");
+      setError(t('errorPleaseProvideDetails'));
       return;
     }
 
@@ -84,17 +91,17 @@ export default function TldrGeniusPage() {
       setSummary(result.summary);
       addHistoryItem(topic, details);
       toast({
-        title: "Summary Generated!",
-        description: `Successfully summarized "${topic}".`,
+        title: t('toastSummaryGeneratedTitle'),
+        description: t('toastSummaryGeneratedDescription', { topic }),
       });
     } catch (e) {
       console.error("Error summarizing topic:", e);
       const errorMessage = e instanceof Error ? e.message : "An unknown error occurred.";
-      setError(`Failed to generate summary: ${errorMessage}`);
+      setError(t('errorFailedToGenerateSummary', { errorMessage }));
       toast({
         variant: "destructive",
-        title: "Uh oh! Something went wrong.",
-        description: `Could not generate summary. ${errorMessage}`,
+        title: t('toastErrorTitle'),
+        description: t('toastErrorDescription', { errorMessage }),
       });
     } finally {
       setIsLoading(false);
@@ -104,57 +111,66 @@ export default function TldrGeniusPage() {
   const loadFromHistory = (item: HistoryItem) => {
     setTopic(item.topic);
     setDetails(item.details);
-    setSummary(null); // Clear previous summary
-    setError(null); // Clear previous error
+    setSummary(null);
+    setError(null);
     toast({
-      title: "Loaded from History",
-      description: `Topic "${item.topic}" loaded into form.`,
+      title: t('toastLoadedFromHistoryTitle'),
+      description: t('toastLoadedFromHistoryDescription', { topic: item.topic }),
     });
   };
 
   const clearHistory = () => {
     setHistory([]);
     toast({
-      title: "History Cleared",
-      description: "Your summarization history has been cleared.",
+      title: t('toastHistoryClearedTitle'),
+      description: t('toastHistoryClearedDescription'),
     });
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center p-4 md:p-8 bg-background">
-      <header className="mb-8 text-center">
+    <div className="min-h-screen flex flex-col items-center p-4 md:p-8 bg-background relative">
+      <Button
+        onClick={() => setLocale(locale === 'en' ? 'es' : 'en')}
+        variant="outline"
+        size="sm"
+        className="absolute top-4 right-4 flex items-center gap-2"
+      >
+        <Languages className="h-4 w-4" />
+        {locale === 'en' ? t('switchToSpanish') : t('switchToEnglish')}
+      </Button>
+
+      <header className="mb-8 text-center pt-12 md:pt-0">
         <div className="flex items-center justify-center mb-2">
           <BotMessageSquare className="h-12 w-12 text-primary mr-3" />
-          <h1 className="text-4xl md:text-5xl font-bold text-foreground">TldrGenius</h1>
+          <h1 className="text-4xl md:text-5xl font-bold text-foreground">{t('pageTitle')}</h1>
         </div>
-        <p className="text-muted-foreground text-lg">Get concise summaries for any topic, powered by AI.</p>
+        <p className="text-muted-foreground text-lg">{t('pageSubtitle')}</p>
       </header>
 
       <main className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Input and Summary Section */}
         <section className="md:col-span-2 space-y-6">
           <Card className="shadow-lg">
             <CardHeader>
-              <CardTitle className="text-2xl">Describe Your Topic</CardTitle>
-              <CardDescription>Provide a topic and some details to get a summary.</CardDescription>
+              <CardTitle className="text-2xl">{t('describeTopicCardTitle')}</CardTitle>
+              <CardDescription>{t('describeTopicCardDescription')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <label htmlFor="topic-input" className="block text-sm font-medium text-foreground mb-1">Topic</label>
+                <label htmlFor="topic-input" className="block text-sm font-medium text-foreground mb-1">{t('topicLabel')}</label>
                 <Input
                   id="topic-input"
                   type="text"
-                  placeholder="e.g., Photosynthesis, The French Revolution"
+                  placeholder={t('topicPlaceholder')}
                   value={topic}
                   onChange={(e) => setTopic(e.target.value)}
                   className="text-base"
                 />
               </div>
               <div>
-                <label htmlFor="details-textarea" className="block text-sm font-medium text-foreground mb-1">Details</label>
+                <label htmlFor="details-textarea" className="block text-sm font-medium text-foreground mb-1">{t('detailsLabel')}</label>
                 <Textarea
                   id="details-textarea"
-                  placeholder="Provide as much detail as possible about the topic. What aspects are you interested in? What specific information should the summary include?"
+                  placeholder={t('detailsPlaceholder')}
                   value={details}
                   onChange={(e) => setDetails(e.target.value)}
                   rows={6}
@@ -167,10 +183,10 @@ export default function TldrGeniusPage() {
                 {isLoading ? (
                   <>
                     <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                    Summarizing...
+                    {t('summarizingButton')}
                   </>
                 ) : (
-                  "Summarize Topic"
+                  t('summarizeButton')
                 )}
               </Button>
             </CardFooter>
@@ -178,7 +194,7 @@ export default function TldrGeniusPage() {
 
           {error && (
             <Alert variant="destructive" className="shadow-md">
-              <AlertTitle>Error</AlertTitle>
+              <AlertTitle>{t('errorAlertTitle')}</AlertTitle>
               <AlertDescription>{error}</AlertDescription>
             </Alert>
           )}
@@ -186,7 +202,7 @@ export default function TldrGeniusPage() {
           {summary && (
             <Card className="shadow-lg">
               <CardHeader>
-                <CardTitle className="text-2xl">Summary</CardTitle>
+                <CardTitle className="text-2xl">{t('summaryCardTitle')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <ScrollArea className="h-auto max-h-96 p-1">
@@ -197,25 +213,24 @@ export default function TldrGeniusPage() {
           )}
         </section>
 
-        {/* History Section */}
         <aside className="md:col-span-1">
           <Card className="shadow-lg h-full">
             <CardHeader className="flex flex-row items-center justify-between">
               <div className="flex items-center">
                 <History className="h-6 w-6 mr-2 text-primary" />
-                <CardTitle className="text-xl">History</CardTitle>
+                <CardTitle className="text-xl">{t('historyCardTitle')}</CardTitle>
               </div>
               {history.length > 0 && (
-                <Button variant="ghost" size="sm" onClick={clearHistory} aria-label="Clear history">
-                  <Trash2 className="h-4 w-4 mr-1" /> Clear
+                <Button variant="ghost" size="sm" onClick={clearHistory} aria-label={t('clearHistoryButton')}>
+                  <Trash2 className="h-4 w-4 mr-1" /> {t('clearHistoryButton')}
                 </Button>
               )}
             </CardHeader>
             <CardContent>
               {history.length === 0 ? (
-                <p className="text-sm text-muted-foreground text-center py-4">No history yet. Summarize a topic to see it here!</p>
+                <p className="text-sm text-muted-foreground text-center py-4">{t('noHistoryMessage')}</p>
               ) : (
-                <ScrollArea className="h-[calc(100vh-18rem)] md:h-[calc(100vh-14rem)] max-h-[500px] pr-3"> {/* Adjusted height */}
+                <ScrollArea className="h-[calc(100vh-18rem)] md:h-[calc(100vh-14rem)] max-h-[500px] pr-3">
                   <ul className="space-y-3">
                     {history.map((item) => (
                       <li key={item.id}>
@@ -238,7 +253,7 @@ export default function TldrGeniusPage() {
         </aside>
       </main>
       <footer className="mt-12 text-center text-sm text-muted-foreground">
-        <p>&copy; {new Date().getFullYear()} TldrGenius. All rights reserved.</p>
+        {currentYear !== null && <p>{t('footerText', { year: currentYear })}</p>}
       </footer>
     </div>
   );

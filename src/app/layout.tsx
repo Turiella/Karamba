@@ -1,21 +1,25 @@
-import type {Metadata} from 'next';
-import { Geist, Geist_Mono } from 'next/font/google'; // Corrected import
-import './globals.css';
-import { Toaster } from "@/components/ui/toaster"; // Added Toaster import
 
-const geistSans = Geist({ // Corrected instantiation
+import type {Metadata} from 'next';
+import { Geist, Geist_Mono } from 'next/font/google';
+import './globals.css';
+import { Toaster } from "@/components/ui/toaster";
+import { LocaleProvider } from '@/contexts/LocaleContext'; // Added LocaleProvider import
+
+const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin'],
 });
 
-const geistMono = Geist_Mono({ // Corrected instantiation
+const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
   subsets: ['latin'],
 });
 
+// Static metadata will be in the default language (Spanish)
+// and dynamically updated by LocaleProvider on the client-side.
 export const metadata: Metadata = {
-  title: 'TldrGenius',
-  description: 'Get concise summaries for any topic.',
+  title: 'TldrGenius', // Spanish default
+  description: 'Obtén resúmenes concisos para cualquier tema.', // Spanish default
 };
 
 export default function RootLayout({
@@ -26,8 +30,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        {children}
-        <Toaster />
+        <LocaleProvider>
+          {children}
+          <Toaster />
+        </LocaleProvider>
       </body>
     </html>
   );
