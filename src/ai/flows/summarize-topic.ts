@@ -25,7 +25,7 @@ const SummarizeTopicInputSchema = z.object({
 export type SummarizeTopicInput = z.infer<typeof SummarizeTopicInputSchema>;
 
 const SummarizeTopicOutputSchema = z.object({
-  summary: z.string().describe('A summary of the topic in the requested language. If the topic is broad or complex, the summary should be more detailed and comprehensive.'),
+  summary: z.string().describe('A summary of the topic in the requested language. If the topic is broad or complex, the summary should be more detailed and comprehensive, but still manageable in length.'),
 });
 
 export type SummarizeTopicOutput = z.infer<typeof SummarizeTopicOutputSchema>;
@@ -45,7 +45,7 @@ const summarizeTopicPrompt = ai.definePrompt({
   prompt: `You are an expert at creating summaries of complex topics for secondary students.
 
   Given the following topic and details, create a summary that captures the key concepts in a clear and understandable way.
-  If the topic is broad or complex (e.g., major historical events, scientific theories, extensive literary works), provide a more detailed and comprehensive summary highlighting the most relevant facts, figures, causes, consequences, and key aspects. Ensure the summary is well-structured and easy to follow.
+  If the topic is broad or complex (e.g., major historical events, scientific theories, extensive literary works), provide a comprehensive yet manageable summary highlighting the most relevant facts, figures, causes, consequences, and key aspects. Ensure the summary is well-structured, easy to follow, and avoids excessive length.
   For more specific or narrow topics, a concise summary is appropriate.
   The summary MUST be in {{{language}}}.
 
@@ -65,3 +65,4 @@ const summarizeTopicFlow = ai.defineFlow(
     return output!;
   }
 );
+
