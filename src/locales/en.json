@@ -30,5 +30,12 @@
   "toastHistoryClearedTitle": "History Cleared",
   "toastHistoryClearedDescription": "Your summarization history has been cleared.",
   "switchToSpanish": "Español",
-  "switchToEnglish": "English"
+  "switchToEnglish": "English",
+  "voiceInputTopicTooltip": "Input topic by voice",
+  "voiceInputDetailsTooltip": "Input details by voice",
+  "listeningTooltip": "Listening... Click to stop",
+  "errorSpeechRecognitionNotSupported": "Speech recognition is not supported by your browser.",
+  "errorMicrophonePermissionDenied": "Microphone permission denied. Please enable it in your browser settings.",
+  "errorSpeechRecognitionGeneric": "An error occurred during speech recognition.",
+  "errorNoSpeechDetected": "No speech was detected. Please try again."
 }

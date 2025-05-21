@@ -30,5 +30,12 @@
   "toastHistoryClearedTitle": "Historial Limpiado",
   "toastHistoryClearedDescription": "Tu historial de resúmenes ha sido limpiado.",
   "switchToSpanish": "Español",
-  "switchToEnglish": "English"
+  "switchToEnglish": "English",
+  "voiceInputTopicTooltip": "Ingresar tema por voz",
+  "voiceInputDetailsTooltip": "Ingresar detalles por voz",
+  "listeningTooltip": "Escuchando... Haz clic para detener",
+  "errorSpeechRecognitionNotSupported": "El reconocimiento de voz no es compatible con tu navegador.",
+  "errorMicrophonePermissionDenied": "Permiso de micrófono denegado. Por favor, actívalo en la configuración de tu navegador.",
+  "errorSpeechRecognitionGeneric": "Ocurrió un error durante el reconocimiento de voz.",
+  "errorNoSpeechDetected": "No se detectó voz. Por favor, inténtalo de nuevo."
 }
