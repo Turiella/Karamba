@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import { LocaleProvider } from '@/contexts/LocaleContext'; // Added LocaleProvider import
+import { QueryProvider } from '@/contexts/QueryProvider';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -30,10 +31,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <LocaleProvider>
-          {children}
-          <Toaster />
-        </LocaleProvider>
+        <QueryProvider>
+          <LocaleProvider>
+            {children}
+            <Toaster />
+          </LocaleProvider>
+        </QueryProvider>
       </body>
     </html>
   );
